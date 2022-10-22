@@ -2,6 +2,7 @@ package com.example.custmngmnt.customermanagement.controller;
 
 import com.example.custmngmnt.customermanagement.dto.CustomerDTO;
 import com.example.custmngmnt.customermanagement.dto.request.CustomerSaveRequestDTO;
+import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateRequestDTO;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
 import com.example.custmngmnt.customermanagement.service.impl.CustomerServiceIMPL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,11 @@ public class CustomerController {
     public String saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO){
         String id = customerService.addCustomer(customerSaveRequestDTO);
         return id;
+    }
+
+    @PutMapping(path = "/update")
+    public String updateCustomer(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO){
+        String updated = customerService.updateCustomer(customerUpdateRequestDTO);
+        return updated;
     }
 }

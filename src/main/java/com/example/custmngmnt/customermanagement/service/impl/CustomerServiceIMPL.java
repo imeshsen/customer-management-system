@@ -1,6 +1,7 @@
 package com.example.custmngmnt.customermanagement.service.impl;
 
 import com.example.custmngmnt.customermanagement.dto.request.CustomerSaveRequestDTO;
+import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateRequestDTO;
 import com.example.custmngmnt.customermanagement.entity.Customer;
 import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
@@ -21,7 +22,7 @@ public class CustomerServiceIMPL implements CustomerService {
                 customerSaveRequestDTO.getCustomerSalary(),
                 customerSaveRequestDTO.getContactNumbers(),
                 customerSaveRequestDTO.getNic(),
-               true
+               false
         );
 
         if(!customerRepo.existsById(customer.getId())){
@@ -31,6 +32,25 @@ public class CustomerServiceIMPL implements CustomerService {
             return "Customer is already exist";
         }
 
+
+    }
+
+    @Override
+    public String updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+        if(customerRepo.existsById(customerUpdateRequestDTO.getId())){
+            Customer customer = customerRepo.getReferenceById(customerUpdateRequestDTO.getId());
+            customer.setName(customerUpdateRequestDTO.getName());
+            customer.setCustomerAddress((customerUpdateRequestDTO.getCustomerAddress()));
+            customer.setCustomerSalary(customerUpdateRequestDTO.getCustomerSalary());
+            customer.setContactNumbers(customerUpdateRequestDTO.getContactNumbers());
+            customer.setNic(customerUpdateRequestDTO.getNic());
+            customer.setActiveState(customerUpdateRequestDTO.isActiveState());
+
+           customerRepo.save(customer);
+           return customer.getName().toString() + " updated";
+        }else {
+            return "Customer not found";
+        }
 
     }
 }
