@@ -1,5 +1,6 @@
 package com.example.custmngmnt.customermanagement.service.impl;
 
+import com.example.custmngmnt.customermanagement.dto.CustomerDTO;
 import com.example.custmngmnt.customermanagement.dto.request.CustomerSaveRequestDTO;
 import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateRequestDTO;
 import com.example.custmngmnt.customermanagement.entity.Customer;
@@ -7,6 +8,8 @@ import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CustomerServiceIMPL implements CustomerService {
@@ -53,4 +56,26 @@ public class CustomerServiceIMPL implements CustomerService {
         }
 
     }
+
+    @Override
+    public CustomerDTO getCustomerById(int customerId) {
+        Optional<Customer> customer = customerRepo.findById(customerId);
+        if (customer.isPresent()){
+            CustomerDTO customerDTO = new CustomerDTO(
+                    customer.get().getId(),
+                    customer.get().getName(),
+                    customer.get().getCustomerAddress(),
+                    customer.get().getCustomerSalary(),
+                    customer.get().getContactNumbers(),
+                    customer.get().getNic(),
+                    customer.get().isActiveState()
+            );
+            return customerDTO;
+        }else {
+            return null;
+        }
+
+    }
+
+
 }

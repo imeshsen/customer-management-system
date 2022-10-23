@@ -26,4 +26,13 @@ public class CustomerController {
         String updated = customerService.updateCustomer(customerUpdateRequestDTO);
         return updated;
     }
+
+    @GetMapping(
+            path = "/get-by-id",
+            params = "id"
+    )
+    public CustomerDTO getCustomerById(@RequestParam(value = "id") int customerId){
+        CustomerDTO customerDTO = customerService.getCustomerById(customerId);
+            return customerDTO;
+    }
 }
