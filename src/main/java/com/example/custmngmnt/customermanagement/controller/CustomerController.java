@@ -8,6 +8,8 @@ import com.example.custmngmnt.customermanagement.service.impl.CustomerServiceIMP
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/customer")
 @CrossOrigin
@@ -16,13 +18,13 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping(path = "/save")
-    public String saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO){
+    public String saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
         String id = customerService.addCustomer(customerSaveRequestDTO);
         return id;
     }
 
     @PutMapping(path = "/update")
-    public String updateCustomer(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO){
+    public String updateCustomer(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         String updated = customerService.updateCustomer(customerUpdateRequestDTO);
         return updated;
     }
@@ -31,8 +33,16 @@ public class CustomerController {
             path = "/get-by-id",
             params = "id"
     )
-    public CustomerDTO getCustomerById(@RequestParam(value = "id") int customerId){
+    public CustomerDTO getCustomerById(@RequestParam(value = "id") int customerId) {
         CustomerDTO customerDTO = customerService.getCustomerById(customerId);
-            return customerDTO;
+        return customerDTO;
+    }
+
+    @GetMapping(
+            path = "/get-all-customer"
+    )
+    public List<CustomerDTO> getAllCustomers() {
+        List<CustomerDTO> allCustomers = customerService.getAllCustomers();
+        return allCustomers;
     }
 }

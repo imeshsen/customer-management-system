@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,6 +84,25 @@ public class CustomerServiceIMPL implements CustomerService {
             return null;
         }
 
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> getCustomers = customerRepo.findAll();
+        List<CustomerDTO>customerDTOList = new ArrayList<>();
+        for (Customer c:getCustomers){
+            CustomerDTO customerDTO = new CustomerDTO(
+                    c.getId(),
+                    c.getName(),
+                    c.getCustomerAddress(),
+                    c.getCustomerSalary(),
+                    c.getContactNumbers(),
+                    c.getNic(),
+                    c.isActiveState()
+            );
+            customerDTOList.add(customerDTO);
+        }
+        return customerDTOList;
     }
 
 
