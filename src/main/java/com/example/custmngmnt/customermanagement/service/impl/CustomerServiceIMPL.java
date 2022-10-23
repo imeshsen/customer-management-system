@@ -6,6 +6,7 @@ import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateReque
 import com.example.custmngmnt.customermanagement.entity.Customer;
 import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Autowired
     private CustomerRepo customerRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public String addCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
@@ -61,15 +65,18 @@ public class CustomerServiceIMPL implements CustomerService {
     public CustomerDTO getCustomerById(int customerId) {
         Optional<Customer> customer = customerRepo.findById(customerId);
         if (customer.isPresent()){
-            CustomerDTO customerDTO = new CustomerDTO(
-                    customer.get().getId(),
-                    customer.get().getName(),
-                    customer.get().getCustomerAddress(),
-                    customer.get().getCustomerSalary(),
-                    customer.get().getContactNumbers(),
-                    customer.get().getNic(),
-                    customer.get().isActiveState()
-            );
+//            CustomerDTO customerDTO = new CustomerDTO(
+//                    customer.get().getId(),
+//                    customer.get().getName(),
+//                    customer.get().getCustomerAddress(),
+//                    customer.get().getCustomerSalary(),
+//                    customer.get().getContactNumbers(),
+//                    customer.get().getNic(),
+//                    customer.get().isActiveState()
+//            );
+//            return customerDTO;
+
+            CustomerDTO customerDTO = modelMapper.map(customer.get(),CustomerDTO.class);
             return customerDTO;
         }else {
             return null;
