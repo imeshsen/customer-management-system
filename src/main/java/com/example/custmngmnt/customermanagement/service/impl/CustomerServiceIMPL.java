@@ -7,6 +7,7 @@ import com.example.custmngmnt.customermanagement.entity.Customer;
 import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,19 +91,22 @@ public class CustomerServiceIMPL implements CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> getCustomers = customerRepo.findAll();
         List<CustomerDTO>customerDTOList = new ArrayList<>();
-        for (Customer c:getCustomers){
-            CustomerDTO customerDTO = new CustomerDTO(
-                    c.getId(),
-                    c.getName(),
-                    c.getCustomerAddress(),
-                    c.getCustomerSalary(),
-                    c.getContactNumbers(),
-                    c.getNic(),
-                    c.isActiveState()
-            );
-            customerDTOList.add(customerDTO);
-        }
-        return customerDTOList;
+//        for (Customer c:getCustomers){
+//            CustomerDTO customerDTO = new CustomerDTO(
+//                    c.getId(),
+//                    c.getName(),
+//                    c.getCustomerAddress(),
+//                    c.getCustomerSalary(),
+//                    c.getContactNumbers(),
+//                    c.getNic(),
+//                    c.isActiveState()
+//            );
+//            customerDTOList.add(customerDTO);
+//        }
+
+        List<CustomerDTO> customerDTOS = modelMapper.
+                map(getCustomers,new TypeToken<List<CustomerDTO>>(){}.getType());
+        return customerDTOS;
     }
 
 
