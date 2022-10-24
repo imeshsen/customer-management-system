@@ -6,6 +6,7 @@ import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateReque
 import com.example.custmngmnt.customermanagement.entity.Customer;
 import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,13 @@ public class CustomerServiceIMPL implements CustomerService {
                 customerSaveRequestDTO.getCustomerSalary(),
                 customerSaveRequestDTO.getContactNumbers(),
                 customerSaveRequestDTO.getNic(),
-               false
+                false
         );
 
-        if(!customerRepo.existsById(customer.getId())){
+        if (!customerRepo.existsById(customer.getId())) {
             customerRepo.save(customer);
-            return customer.getName()+" saved";
-        }else{
+            return customer.getName() + " saved";
+        } else {
             return "Customer is already exist";
         }
 
@@ -47,7 +48,7 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Override
     public String updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        if(customerRepo.existsById(customerUpdateRequestDTO.getId())){
+        if (customerRepo.existsById(customerUpdateRequestDTO.getId())) {
             Customer customer = customerRepo.getReferenceById(customerUpdateRequestDTO.getId());
             customer.setName(customerUpdateRequestDTO.getName());
             customer.setCustomerAddress((customerUpdateRequestDTO.getCustomerAddress()));
@@ -56,9 +57,9 @@ public class CustomerServiceIMPL implements CustomerService {
             customer.setNic(customerUpdateRequestDTO.getNic());
             customer.setActiveState(customerUpdateRequestDTO.isActiveState());
 
-           customerRepo.save(customer);
-           return customer.getName().toString() + " updated";
-        }else {
+            customerRepo.save(customer);
+            return customer.getName() + " updated";
+        } else {
             return "Customer not found";
         }
 
@@ -67,7 +68,7 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public CustomerDTO getCustomerById(int customerId) {
         Optional<Customer> customer = customerRepo.findById(customerId);
-        if (customer.isPresent()){
+        if (customer.isPresent()) {
 //            CustomerDTO customerDTO = new CustomerDTO(
 //                    customer.get().getId(),
 //                    customer.get().getName(),
@@ -79,9 +80,9 @@ public class CustomerServiceIMPL implements CustomerService {
 //            );
 //            return customerDTO;
 
-            CustomerDTO customerDTO = modelMapper.map(customer.get(),CustomerDTO.class);
+            CustomerDTO customerDTO = modelMapper.map(customer.get(), CustomerDTO.class);
             return customerDTO;
-        }else {
+        } else {
             return null;
         }
 
@@ -90,7 +91,7 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> getCustomers = customerRepo.findAll();
-        List<CustomerDTO>customerDTOList = new ArrayList<>();
+        List<CustomerDTO> customerDTOList = new ArrayList<>();
 //        for (Customer c:getCustomers){
 //            CustomerDTO customerDTO = new CustomerDTO(
 //                    c.getId(),
@@ -105,8 +106,19 @@ public class CustomerServiceIMPL implements CustomerService {
 //        }
 
         List<CustomerDTO> customerDTOS = modelMapper.
-                map(getCustomers,new TypeToken<List<CustomerDTO>>(){}.getType());
+                map(getCustomers, new TypeToken<List<CustomerDTO>>() {
+                }.getType());
         return customerDTOS;
+    }
+
+    @Override
+    public boolean deleteCustomer(int id) throws NotFoundException {
+        if (customerRepo.existsById(id)){
+            customerRepo.deleteById(id);
+        }else{
+            throw new NotFoundException("Not found customer for this id");
+        }
+        return true;
     }
 
 

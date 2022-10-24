@@ -4,7 +4,7 @@ import com.example.custmngmnt.customermanagement.dto.CustomerDTO;
 import com.example.custmngmnt.customermanagement.dto.request.CustomerSaveRequestDTO;
 import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateRequestDTO;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
-import com.example.custmngmnt.customermanagement.service.impl.CustomerServiceIMPL;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +44,13 @@ public class CustomerController {
     public List<CustomerDTO> getAllCustomers() {
         List<CustomerDTO> allCustomers = customerService.getAllCustomers();
         return allCustomers;
+    }
+
+    @DeleteMapping(
+            path = {"/delete-customer/{id}"}
+    )
+    public String deleteCustomer(@PathVariable(value = "id")int id) throws NotFoundException {
+        boolean deletedCustomer = customerService.deleteCustomer(id);
+        return "deleted";
     }
 }
