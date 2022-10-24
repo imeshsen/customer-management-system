@@ -19,4 +19,6 @@ public interface CustomerService {
     List<CustomerDTO> getAllCustomers();
 
     boolean deleteCustomer(int id) throws NotFoundException;
+
+    List<CustomerDTO> getByName(String customerName) throws NotFoundException;
 }

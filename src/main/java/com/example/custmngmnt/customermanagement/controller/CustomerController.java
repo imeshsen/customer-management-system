@@ -53,4 +53,13 @@ public class CustomerController {
         boolean deletedCustomer = customerService.deleteCustomer(id);
         return "deleted";
     }
+
+    @GetMapping(
+            path = {"/get-by-name"},
+            params = {"name"}
+    )
+    public List<CustomerDTO> getCustomerByName(@RequestParam(value = "name")String customerName) throws NotFoundException {
+        List<CustomerDTO>getCustomer = customerService.getByName(customerName);
+        return getCustomer;
+    }
 }

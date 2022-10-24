@@ -6,6 +6,7 @@ import com.example.custmngmnt.customermanagement.dto.request.CustomerUpdateReque
 import com.example.custmngmnt.customermanagement.entity.Customer;
 import com.example.custmngmnt.customermanagement.repo.CustomerRepo;
 import com.example.custmngmnt.customermanagement.service.CustomerService;
+import com.example.custmngmnt.customermanagement.util.mappers.CustomerMapper;
 import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -24,6 +25,9 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Override
     public String addCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
@@ -80,7 +84,8 @@ public class CustomerServiceIMPL implements CustomerService {
 //            );
 //            return customerDTO;
 
-            CustomerDTO customerDTO = modelMapper.map(customer.get(), CustomerDTO.class);
+//            CustomerDTO customerDTO = modelMapper.map(customer.get(), CustomerDTO.class);
+            CustomerDTO customerDTO =customerMapper.entityToDto(customer.get());
             return customerDTO;
         } else {
             return null;
@@ -119,6 +124,20 @@ public class CustomerServiceIMPL implements CustomerService {
             throw new NotFoundException("Not found customer for this id");
         }
         return true;
+    }
+
+    @Override
+    public List<CustomerDTO> getByName(String customerName) throws NotFoundException {
+        List<Customer>customers = customerRepo.findAllByNameEquals(customerName);
+        if (customers.size() !=0){
+            List<CustomerDTO> customerDTOS = modelMapper.
+                    map(customers, new TypeToken<List<CustomerDTO>>() {
+                    }.getType());
+            return customerDTOS;
+        }else{
+            throw new NotFoundException("No results");
+        }
+
     }
 
 
