@@ -1,25 +1,20 @@
 pipeline {
     agent any
 
-    // tools {
-    //     maven 'Maven 3.8.4'
-    // }
-
     stages {
         stage('Clone') {
             steps {
-                sh 'git clone https://github.com/imeshsen/Customer-management-system.git'
+                git 'https://github.com/imeshsen/Customer-management-system.git'
             }
         }
 
         stage('Run') {
             steps {
                 sh '''
-                chmod 777 -R run.bash
+                chmod +x run.bash
                 ./run.bash
                 '''
             }
         }
     }
 }
-
