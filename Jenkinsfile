@@ -11,7 +11,6 @@ pipeline {
         stage('Permission settings') {
             steps {
                 sh '''
-                 sudo chmod 777 -R /var/run/docker.sock
                  chmod +x run.sh
                  '''
             }
