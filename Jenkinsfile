@@ -10,13 +10,13 @@ pipeline {
 
         stage('Permission settings') {
             steps {
-                sh 'chmod +x *.bash'
+                sh 'chmod +x run.sh'
             }
         }
 
         stage('Run') {
             steps {
-                sh './*.bash'
+                sh './run.sh'
             }
         }
     }
