@@ -1,26 +1,20 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3.8.3'
-    }
+    // tools {
+    //     maven 'Maven 3.8.4'
+    // }
 
     stages {
-        stage('Build') {
+        stage('Clone') {
             steps {
-                sh 'mvn clean package'
+                sh 'git clone https://github.com/imeshsen/Customer-management-system.git'
             }
         }
 
-        stage('Test') {
+        stage('Run') {
             steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'mvn deploy'
+                sh './run.bash'
             }
         }
     }
