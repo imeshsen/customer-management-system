@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo chmod 777 -R /var/run/docker.sock
+
 docker build -t spring .
 
 docker run -d --name mysql-container --network spring-network -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:latest
