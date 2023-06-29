@@ -8,13 +8,13 @@ pipeline {
             }
         }
 
-        stage('Permission settings') {
-            steps {
-                sh '''
-                 chmod +x run.sh
-                 '''
-            }
-        }
+        // stage('Permission settings') {
+        //     steps {
+        //         sh '''
+        //          chmod +x run.sh
+        //          '''
+        //     }
+        // }
 
         stage('Run') {
             steps {
