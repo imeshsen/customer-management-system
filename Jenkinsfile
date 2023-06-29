@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -8,20 +9,28 @@ pipeline {
             }
         }
 
-        // stage('Permission settings') {
-        //     steps {
-        //         sh '''
-        //          chmod +x run.sh
-        //          '''
-        //     }
-        // }
-
-        stage('Run') {
+        stage('Docker setup') {
             steps {
                 sh '''
-				chmod +x run.sh
-				./run.sh
-				'''
+                chmod +x run.sh
+                ./run.sh
+                '''
+            }
+        }
+
+        stage('Running MySQL container') {
+            steps {
+                sh '''
+                docker run -d --name mysql-container --network spring-network -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:latest
+                '''
+            }
+        }
+
+        stage('Running Backend container') {
+            steps {
+                sh '''
+                docker run -d --name spring-container --network spring-network -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/customer?createDatabaseIfNotExist=true -e SPRING_DATASOURCE_USERNAME=root spring
+                '''
             }
         }
     }
