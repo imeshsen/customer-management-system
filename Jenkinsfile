@@ -18,7 +18,10 @@ pipeline {
 
         stage('Run') {
             steps {
-                sh './run.sh'
+                sh '''
+				chmod +x run.sh
+				./run.sh
+				'''
             }
         }
     }
