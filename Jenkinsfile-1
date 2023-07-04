@@ -6,9 +6,8 @@ pipeline {
   stages {
     stage('Scan') {
       steps {
-        withSonarQubeEnv(installationName: 'sq1') { 
-          sh 'chmod 777 /var/lib/jenkins/workspace/sonar@tmp/durable-a2eb9a81/script.sh'
-          sh './mvnw clean sonar:sonar'
+        withSonarQubeEnv(installationName: 'sq1') {
+          sh 'mvn clean sonar:sonar'
         }
       }
     }
