@@ -11,8 +11,8 @@ pipeline {
         stage('Docker setup') {
             steps {
                 sh '''
-                chmod +x run.sh
-                ./run.sh
+                docker network create spring-network
+                docker build -t spring .
                 '''
             }
         }
