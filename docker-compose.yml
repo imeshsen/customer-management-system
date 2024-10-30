@@ -11,7 +11,7 @@ services:
       db:
         condition: service_started
     networks:
-      - net
+      - spring-network
   db:
     image: mysql:latest
     container_name: mysql
@@ -21,6 +21,6 @@ services:
       MYSQL_USER: root 
       MYSQL_ALLOW_EMPTY_PASSWORD: true
     networks:
-      - net
+      - spring-network
 networks:
-    net:
+    spring-network:
